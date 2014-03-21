@@ -11,17 +11,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.kanilturgut.RKM.Constans;
 import com.kanilturgut.RKM.R;
-import com.kanilturgut.RKM.justification.TextViewEx;
 
 /**
  * Created by kanilturgut on 19/03/14.
  */
-public class MyAvatarPagerAdapter extends FragmentPagerAdapter {
+public class MyViewPagerAdapter extends FragmentPagerAdapter {
 
     static Context context = null;
     public static final String ARG_PAGE = "page";
 
-    public MyAvatarPagerAdapter(android.support.v4.app.FragmentManager fm, Context c) {
+    public MyViewPagerAdapter(android.support.v4.app.FragmentManager fm, Context c) {
         super(fm);
 
         this.context = c;
@@ -31,7 +30,7 @@ public class MyAvatarPagerAdapter extends FragmentPagerAdapter {
     @Override
     public android.support.v4.app.Fragment getItem(int position) {
 
-        return PageFragmentForAvatar.create(position);
+        return PageFragment.create(position);
     }
 
     @Override
@@ -41,23 +40,22 @@ public class MyAvatarPagerAdapter extends FragmentPagerAdapter {
 
 
     //Fragments
-    public static class PageFragmentForAvatar extends Fragment {
+    public static class PageFragment extends Fragment {
 
         ImageView tv;
         int myPageNumber;
         TextView textView;
 
-
-        public static PageFragmentForAvatar create(int pageNumber) {
-            PageFragmentForAvatar pageFragmentForAvatar = new PageFragmentForAvatar();
+        public static PageFragment create(int pageNumber) {
+            PageFragment pageFragment = new PageFragment();
             Bundle bundle = new Bundle();
             bundle.putInt(ARG_PAGE, pageNumber);
-            pageFragmentForAvatar.setArguments(bundle);
+            pageFragment.setArguments(bundle);
 
-            return pageFragmentForAvatar;
+            return pageFragment;
         }
 
-        public PageFragmentForAvatar() {
+        public PageFragment() {
         }
 
         @Override

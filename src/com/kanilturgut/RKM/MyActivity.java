@@ -1,27 +1,18 @@
 package com.kanilturgut.RKM;
 
-import android.content.pm.ActivityInfo;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
-import android.view.Display;
 import android.view.View;
-import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.Toast;
-import com.kanilturgut.RKM.adapter.MyAvatarPagerAdapter;
-import com.kanilturgut.RKM.adapter.MyTweetPagerAdapter;
+import com.kanilturgut.RKM.adapter.MyViewPagerAdapter;
 
 import java.lang.reflect.Field;
 
 public class MyActivity extends FragmentActivity {
 
-    ViewPager tweetPager, avatarPager;
-    //MyTweetPagerAdapter myTweetPagerAdapter;
-    MyAvatarPagerAdapter myAvatarPagerAdapter;
+    ViewPager viewPager;
+    MyViewPagerAdapter myViewPagerAdapter;
 
     Handler h = null;
     Runnable r = null;
@@ -31,50 +22,37 @@ public class MyActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        //to hide system bar
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
 
-        Log.i("BOOT_OK", "in onCreate of MyActivity");
-
+        //starts application after 4 second to load UI components
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 init();
             }
-        }, 2000);
+        }, 4000);
     }
 
     private void init() {
-        //tweetPager = (ViewPager) findViewById(R.id.mViewPagerForTweet);
-        //myTweetPagerAdapter = new MyTweetPagerAdapter(getSupportFragmentManager(), MyActivity.this);
 
-        avatarPager = (ViewPager) findViewById(R.id.mViewPagerForAvatar);
-        myAvatarPagerAdapter = new MyAvatarPagerAdapter(getSupportFragmentManager(), MyActivity.this);
-
+        viewPager = (ViewPager) findViewById(R.id.mViewPager);
+        myViewPagerAdapter = new com.kanilturgut.RKM.adapter.MyViewPagerAdapter(getSupportFragmentManager(), MyActivity.this);
 
         try {
-            Field mScrollerForTwetter, mScrollerForAvatar;
-            /*
-            mScrollerForTwetter = ViewPager.class.getDeclaredField("mScroller");
-            mScrollerForTwetter.setAccessible(true);
-            FixedSpeedScroller scrollerForTwitter = new FixedSpeedScroller(tweetPager.getContext());
-            mScrollerForTwetter.set(tweetPager, scrollerForTwitter);
-*/
+            Field  mScrollerForAvatar;
             mScrollerForAvatar = ViewPager.class.getDeclaredField("mScroller");
             mScrollerForAvatar.setAccessible(true);
-            FixedSpeedScroller scrollerForAvatar = new FixedSpeedScroller(avatarPager.getContext());
-            mScrollerForAvatar.set(avatarPager, scrollerForAvatar);
-
+            FixedSpeedScroller scrollerForAvatar = new FixedSpeedScroller(viewPager.getContext());
+            mScrollerForAvatar.set(viewPager, scrollerForAvatar);
 
         } catch (NoSuchFieldException e) {
         } catch (IllegalArgumentException e) {
         } catch (IllegalAccessException e) {
         }
 
-        if (avatarPager != null) {
-            //tweetPager.setAdapter(myTweetPagerAdapter);
-            avatarPager.setAdapter(myAvatarPagerAdapter);
+        if (viewPager != null) {
+            viewPager.setAdapter(myViewPagerAdapter);
         }
 
 
@@ -82,17 +60,12 @@ public class MyActivity extends FragmentActivity {
         r = new Runnable() {
             @Override
             public void run() {
-
-                //tweetPager.setCurrentItem(tweetPager.getCurrentItem() + 1);
-                avatarPager.setCurrentItem(avatarPager.getCurrentItem() + 1);
-
+                viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
                 h.postDelayed(r, 8000);
-
             }
         };
 
          h.postDelayed(r, 8000);
-
     }
 
     @Override
@@ -100,6 +73,4 @@ public class MyActivity extends FragmentActivity {
         super.onStop();
         h.removeCallbacks(r);
     }
-
-
 }
