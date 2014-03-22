@@ -31,7 +31,7 @@ public class MyActivity extends FragmentActivity {
             public void run() {
                 init();
             }
-        }, 4000);
+        }, Constans.APPLICATLION_START_TIME);
     }
 
     private void init() {
@@ -61,11 +61,11 @@ public class MyActivity extends FragmentActivity {
             @Override
             public void run() {
                 viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
-                h.postDelayed(r, 8000);
+                h.postDelayed(r, Constans.SHOW_TIME_PER_IMAGE);
             }
         };
 
-         h.postDelayed(r, 8000);
+         h.postDelayed(r, Constans.SHOW_TIME_PER_IMAGE);
     }
 
     @Override

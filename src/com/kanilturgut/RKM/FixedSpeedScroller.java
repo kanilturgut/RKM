@@ -9,7 +9,7 @@ import android.widget.Scroller;
  */
 public class FixedSpeedScroller extends Scroller{
 
-    private int mDuration = 4000;
+    private int mDuration = Constans.TRANSACTION_PER_IMAGE;
 
     public FixedSpeedScroller(Context context) {
         super(context);
