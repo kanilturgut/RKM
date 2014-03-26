@@ -1,0 +1,46 @@
+package com.kanilturgut.RKM.page_model;
+
+import android.graphics.drawable.Drawable;
+
+/**
+ * Created by kanilturgut on 26/03/14, 15:25.
+ */
+public class SocialUser {
+
+    String name;
+    String surname;
+    String username;
+    Drawable avatar;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public Drawable getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(Drawable avatar) {
+        this.avatar = avatar;
+    }
+}

@@ -4,12 +4,21 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 import com.kanilturgut.RKM.adapter.MyViewPagerAdapter;
+import com.kanilturgut.RKM.page_model.Foursquare;
+import com.kanilturgut.RKM.page_model.Instagram;
+import com.kanilturgut.RKM.page_model.SocialNetwork;
+import com.kanilturgut.RKM.page_model.Twitter;
 
 import java.lang.reflect.Field;
+import java.util.LinkedList;
+import java.util.List;
 
 public class MyActivity extends FragmentActivity {
+
+    public static List<SocialNetwork> socialNetworkList = new LinkedList<SocialNetwork>();
 
     ViewPager viewPager;
     MyViewPagerAdapter myViewPagerAdapter;
@@ -36,8 +45,19 @@ public class MyActivity extends FragmentActivity {
 
     private void init() {
 
+        startFaking();
+
         viewPager = (ViewPager) findViewById(R.id.mViewPager);
         myViewPagerAdapter = new com.kanilturgut.RKM.adapter.MyViewPagerAdapter(getSupportFragmentManager(), MyActivity.this);
+
+        /*
+        viewPager.setPageTransformer(false, new ViewPager.PageTransformer() {
+            @Override
+            public void transformPage(View view, float v) {
+                view.setRotationY(v * -30);
+            }
+        });
+        */
 
         try {
             Field  mScrollerForAvatar;
@@ -66,6 +86,30 @@ public class MyActivity extends FragmentActivity {
         };
 
          h.postDelayed(r, Constans.SHOW_TIME_PER_IMAGE);
+    }
+
+    private void startFaking() {
+
+        Faker faker = new Faker(MyActivity.this);
+        faker.createLists();
+
+        List<Twitter> twitterList = faker.getTwitterList();
+        List<Foursquare> foursquareList = faker.getFoursquareList();
+        List<Instagram> instagramList = faker.getInstagramList();
+
+        for (Twitter twitter: twitterList) {
+            socialNetworkList.add(twitter);
+        }
+
+        for (Foursquare foursquare: foursquareList) {
+            socialNetworkList.add(foursquare);
+        }
+
+        for (Instagram instagram: instagramList) {
+            socialNetworkList.add(instagram);
+        }
+
+        Log.i("deneme", " " + socialNetworkList.size());
     }
 
     @Override
