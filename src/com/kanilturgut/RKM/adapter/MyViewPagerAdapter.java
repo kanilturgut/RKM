@@ -1,65 +1,80 @@
 package com.kanilturgut.RKM.adapter;
 
+import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.graphics.drawable.ColorDrawable;
+import android.graphics.Bitmap;
 import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
+import com.androidquery.AQuery;
+import com.androidquery.callback.ImageOptions;
 import com.kanilturgut.RKM.Constans;
-import com.kanilturgut.RKM.MyActivity;
 import com.kanilturgut.RKM.Page;
 import com.kanilturgut.RKM.R;
-import com.kanilturgut.RKM.page_model.Foursquare;
-import com.kanilturgut.RKM.page_model.Instagram;
 import com.kanilturgut.RKM.page_model.SocialNetwork;
 import com.kanilturgut.RKM.page_model.Twitter;
 
-import java.util.Random;
+import java.util.LinkedList;
 
 /**
- * Created by kanilturgut on 19/03/14.
+ *
+ * Author : kanilturgut
+ * Date : 23.04.2014
+ * Time : 15:18
  */
 public class MyViewPagerAdapter extends FragmentPagerAdapter {
 
     static Context context = null;
+    Activity activity;
     public static final String ARG_PAGE = "page";
+    static LinkedList<SocialNetwork> socialNetworkList;
 
-    static Random random = new Random();
-    static int size = MyActivity.socialNetworkList.size();
+    static MyViewPagerAdapter myViewPagerAdapter;
 
-    public MyViewPagerAdapter(android.support.v4.app.FragmentManager fm, Context c) {
+    public static MyViewPagerAdapter getInstance(FragmentManager fm, Activity c, LinkedList<SocialNetwork> list) {
+
+        if (myViewPagerAdapter == null)
+            myViewPagerAdapter = new MyViewPagerAdapter(fm, c, list);
+
+
+        return myViewPagerAdapter;
+    }
+
+    public MyViewPagerAdapter(FragmentManager fm, Activity c, LinkedList<SocialNetwork> list) {
         super(fm);
 
+        activity = c;
         context = c;
-
+        socialNetworkList = list;
     }
 
     @Override
-    public android.support.v4.app.Fragment getItem(int position) {
+    public Fragment getItem(int position) {
 
-        return PageFragment.create(position);
+        return PageFragment.create(position % Constans.NUMBER_OF_PAGE);
     }
 
     @Override
     public int getCount() {
+
         return Integer.MAX_VALUE;
     }
 
 
     //Fragments
     public static class PageFragment extends Fragment {
+
+        AQuery aQuery;
 
         int myPageNumber;
 
@@ -68,7 +83,6 @@ public class MyViewPagerAdapter extends FragmentPagerAdapter {
         TextView tvHeaderWriteUs, tvContentUserName, tvContentUsername, tvContentPost, tvFooterVia;
 
         RelativeLayout layout_main;
-
 
         public static PageFragment create(int pageNumber) {
             PageFragment pageFragment = new PageFragment();
@@ -87,12 +101,17 @@ public class MyViewPagerAdapter extends FragmentPagerAdapter {
             super.onCreate(savedInstanceState);
 
             myPageNumber = getArguments().getInt(ARG_PAGE);
-
+            aQuery = new AQuery(context);
         }
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+            Log.i("PageNumber", "myCurrentPageNumber is " + myPageNumber);
+
             View view = inflater.inflate(R.layout.layout_pager, container, false);
+
+            SocialNetwork socialNetwork = socialNetworkList.get(myPageNumber);
 
             layout_main = (RelativeLayout) view.findViewById(R.id.layout_main);
 
@@ -107,7 +126,6 @@ public class MyViewPagerAdapter extends FragmentPagerAdapter {
             tvContentPost = (TextView) view.findViewById(R.id.tvContentPost);
             tvFooterVia = (TextView) view.findViewById(R.id.tvFooterVia);
 
-            SocialNetwork socialNetwork = MyActivity.socialNetworkList.get(random.nextInt(size));
 
             if (socialNetwork.returnPageType() == Page.PAGE_TYPE_TWITTER) {
                 Twitter twitter = (Twitter) socialNetwork;
@@ -119,73 +137,44 @@ public class MyViewPagerAdapter extends FragmentPagerAdapter {
                 ivHeaderSocialIcon.setImageDrawable(context.getResources().getDrawable(R.drawable.twitter_icon));
                 //ivHeaderSocialIcon.startAnimation(animFadeIn);
 
-                ivContentUserAvatar.setImageDrawable(twitter.getUser().getAvatar());
-                //ivContentUserAvatar.startAnimation(animFadeIn);
+                ImageOptions options = new ImageOptions();
+                options.fileCache = true;
+                options.memCache = true;
+                options.targetWidth = 0;
 
-                //ivContentPostImage.setImageDrawable(twitter.getImageOfTweet());
+                if (twitter.getUser().getAvatar().contains("http")) {
+
+                    Bitmap bmp = aQuery.getCachedImage(twitter.getUser().getAvatar());
+                    if (bmp == null)
+                        aQuery.id(ivContentUserAvatar).image(twitter.getUser().getAvatar(), options);
+                    else
+                        ivContentUserAvatar.setImageBitmap(bmp);
+                }
+
+                if (twitter.getImageOfTweet().contains("http")) {
+
+                    Log.i("TAG", "twitter.getImageOfTweet() returned true");
+                    Log.i("TAG", "twitter.getImageOfTweet() is " + twitter.getImageOfTweet());
+
+                    Bitmap bmp1 = aQuery.getCachedImage(twitter.getImageOfTweet());
+                    if (bmp1 == null)
+                        aQuery.id(ivContentPostImage).image(twitter.getImageOfTweet(), options);
+                    else
+                        ivContentPostImage.setImageBitmap(bmp1);
+                }
+
                 ivFooterSocialIcon.setImageDrawable(context.getResources().getDrawable(R.drawable.twitter_icon));
-                //ivFooterSocialIcon.startAnimation(animFadeIn);
 
-                tvHeaderWriteUs.setText("#tobbetu' ye yazabilirsiniz");
+                tvHeaderWriteUs.setText("#" + twitter.getHashtag());
                 tvContentUserName.setText(twitter.getUser().getName() + " " + twitter.getUser().getSurname());
                 tvContentUsername.setText("@" + twitter.getUser().getUsername());
                 tvContentPost.setText(twitter.getTweet());
                 tvFooterVia.setText("Just now via Twitter");
 
-            } else if (socialNetwork.returnPageType() == Page.PAGE_TYPE_INSTAGRAM) {
-
-                Instagram instagram = (Instagram) socialNetwork;
-                //load animation
-                Animation animFadeIn = AnimationUtils.loadAnimation(context, R.anim.fade_in);
-
-                layout_main.setBackgroundResource(R.drawable.transition_instagram);
-                TransitionDrawable transition = (TransitionDrawable) layout_main.getBackground();
-                transition.startTransition(6000);
-
-                ivHeaderSocialIcon.setImageDrawable(context.getResources().getDrawable(R.drawable.instagram_icon));
-                //ivHeaderSocialIcon.startAnimation(animFadeIn);
-
-                ivContentUserAvatar.setImageDrawable(instagram.getUser().getAvatar());
-                //ivContentUserAvatar.startAnimation(animFadeIn);
-
-                ivContentPostImage.setImageDrawable(instagram.getImageOfInstagram());
-                ivContentPostImage.startAnimation(animFadeIn);
-
-                ivFooterSocialIcon.setImageDrawable(context.getResources().getDrawable(R.drawable.instagram_icon));
-                //ivFooterSocialIcon.startAnimation(animFadeIn);
-
-                tvHeaderWriteUs.setText("#tobbetu' ye yazabilirsiniz");
-                tvContentUserName.setText(instagram.getUser().getName() + " " + instagram.getUser().getSurname());
-                tvContentUsername.setText("@" + instagram.getUser().getUsername());
-                tvContentPost.setText(instagram.getPost());
-                tvFooterVia.setText("Just now via Instagram");
-
-            } else if (socialNetwork.returnPageType() == Page.PAGE_TYPE_FOURSQUARE) {
-
-                Foursquare foursquare = (Foursquare) socialNetwork;
-
-                layout_main.setBackgroundResource(R.drawable.transition_foursquare);
-                TransitionDrawable transition = (TransitionDrawable) layout_main.getBackground();
-                transition.startTransition(6000);
-
-                ivHeaderSocialIcon.setImageDrawable(context.getResources().getDrawable(R.drawable.foursquare_icon));
-                //ivHeaderSocialIcon.startAnimation(animFadeIn);
-
-                ivContentUserAvatar.setImageDrawable(foursquare.getUser().getAvatar());
-                //ivContentUserAvatar.startAnimation(animFadeIn);
-
-                //ivContentPostImage.setImageDrawable(twitter.getImageOfTweet());
-
-                ivFooterSocialIcon.setImageDrawable(context.getResources().getDrawable(R.drawable.foursquare_icon));
-                //ivFooterSocialIcon.startAnimation(animFadeIn);
-
-                tvHeaderWriteUs.setText("#tobbetu' ye yazabilirsiniz");
-                tvContentUserName.setText(foursquare.getUser().getName() + " " + foursquare.getUser().getSurname());
-                tvContentUsername.setText("@" + foursquare.getUser().getUsername());
-                tvContentPost.setText(foursquare.getPost());
-                tvFooterVia.setText("Just now via Foursquare");
             }
 
+
+/*
             SharedPreferences sp = MyActivity.sharedPreferences;
             SharedPreferences.Editor editor = sp.edit();
             editor.putInt("counter", MyActivity.counter);
@@ -193,8 +182,12 @@ public class MyViewPagerAdapter extends FragmentPagerAdapter {
 
             Toast.makeText(context, "count : " + MyActivity.counter, Toast.LENGTH_SHORT).show();
             MyActivity.counter++;
+            */
 
             return view;
         }
     }
+
+
+
 }

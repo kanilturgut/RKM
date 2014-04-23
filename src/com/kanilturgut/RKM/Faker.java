@@ -35,35 +35,35 @@ public class Faker {
         user.setName("Kadir Anıl");
         user.setSurname("Turğut");
         user.setUsername("kanilturgut");
-        user.setAvatar(context.getResources().getDrawable(R.drawable.anil));
+       // user.setAvatar(context.getResources().getDrawable(R.drawable.anil));
         socialUserList.add(user);
 
         user = new SocialUser();
         user.setName("Muhammet");
         user.setSurname("Can");
         user.setUsername("jeffisabelle");
-        user.setAvatar(context.getResources().getDrawable(R.drawable.muhammet));
+        //user.setAvatar(context.getResources().getDrawable(R.drawable.muhammet));
         socialUserList.add(user);
 
         user = new SocialUser();
         user.setName("Can");
         user.setSurname("Demirdağ");
         user.setUsername("cano");
-        user.setAvatar(context.getResources().getDrawable(R.drawable.can));
+        //user.setAvatar(context.getResources().getDrawable(R.drawable.can));
         socialUserList.add(user);
 
         user = new SocialUser();
         user.setName("Umut Ozan");
         user.setSurname("Yıldırım");
         user.setUsername("feluna");
-        user.setAvatar(context.getResources().getDrawable(R.drawable.ozan));
+       // user.setAvatar(context.getResources().getDrawable(R.drawable.ozan));
         socialUserList.add(user);
 
         user = new SocialUser();
         user.setName("Onur Can");
         user.setSurname("Sert");
         user.setUsername("ocsert");
-        user.setAvatar(context.getResources().getDrawable(R.drawable.onur));
+        //user.setAvatar(context.getResources().getDrawable(R.drawable.onur));
         socialUserList.add(user);
     }
 

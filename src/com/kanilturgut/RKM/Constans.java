@@ -6,7 +6,7 @@ package com.kanilturgut.RKM;
 public class Constans {
 
 
-    public static int NUMBER_OF_PAGE = 5;
+    public static int NUMBER_OF_PAGE = 20;
 
     public static int APPLICATLION_START_TIME = 6 * 1000; //seconds
 

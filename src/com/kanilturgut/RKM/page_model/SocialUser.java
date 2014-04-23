@@ -1,7 +1,5 @@
 package com.kanilturgut.RKM.page_model;
 
-import android.graphics.drawable.Drawable;
-
 /**
  * Created by kanilturgut on 26/03/14, 15:25.
  */
@@ -10,7 +8,7 @@ public class SocialUser {
     String name;
     String surname;
     String username;
-    Drawable avatar;
+    String avatar;
 
     public String getName() {
         return name;
@@ -36,11 +34,11 @@ public class SocialUser {
         this.username = username;
     }
 
-    public Drawable getAvatar() {
+    public String getAvatar() {
         return avatar;
     }
 
-    public void setAvatar(Drawable avatar) {
+    public void setAvatar(String avatar) {
         this.avatar = avatar;
     }
 }
