@@ -1,5 +1,7 @@
 package com.kanilturgut.RKM;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
@@ -13,6 +15,8 @@ import com.kanilturgut.RKM.page_model.SocialNetwork;
 import com.kanilturgut.RKM.page_model.Twitter;
 
 import java.lang.reflect.Field;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -26,15 +30,23 @@ public class MyActivity extends FragmentActivity {
     Handler h = null;
     Runnable r = null;
 
+    public static int counter = 0;
+
+    public static SharedPreferences sharedPreferences;
+    SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.YYYY HH:mm:ss");
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        //to hide system bar
-        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+        sharedPreferences = getSharedPreferences("logs", Context.CONTEXT_IGNORE_SECURITY);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("starting_time", sdf.format(new Date()));
+        editor.commit();
 
-        //starts application after 4 second to load UI components
+        //starts application after 6 second to load UI components
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -44,6 +56,12 @@ public class MyActivity extends FragmentActivity {
     }
 
     private void init() {
+
+
+        //startService(new Intent(MyActivity.this, tt.class));
+
+        //to hide system bar
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
 
         startFaking();
 
@@ -116,5 +134,15 @@ public class MyActivity extends FragmentActivity {
     protected void onStop() {
         super.onStop();
         h.removeCallbacks(r);
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("end_time", sdf.format(new Date()));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        onCreate(null);
     }
 }

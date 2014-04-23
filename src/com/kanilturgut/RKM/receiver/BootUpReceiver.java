@@ -7,6 +7,7 @@ import android.util.Log;
 import android.widget.Toast;
 import com.kanilturgut.RKM.MyActivity;
 
+
 /**
  * Created by kanilturgut on 19/03/14.
  */
@@ -14,6 +15,9 @@ public class BootUpReceiver extends BroadcastReceiver{
 
     @Override
     public void onReceive(Context context, Intent intent) {
+
+        Log.i("Boot", "Boot finished");
+        Toast.makeText(context, "Boot finished", Toast.LENGTH_LONG).show();
 
         //After boot complete, new activity starts
         Intent i = new Intent(context, MyActivity.class);

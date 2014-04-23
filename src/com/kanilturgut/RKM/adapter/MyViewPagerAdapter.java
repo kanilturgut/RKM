@@ -1,6 +1,7 @@
 package com.kanilturgut.RKM.adapter;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
@@ -184,6 +185,14 @@ public class MyViewPagerAdapter extends FragmentPagerAdapter {
                 tvContentPost.setText(foursquare.getPost());
                 tvFooterVia.setText("Just now via Foursquare");
             }
+
+            SharedPreferences sp = MyActivity.sharedPreferences;
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putInt("counter", MyActivity.counter);
+            editor.commit();
+
+            Toast.makeText(context, "count : " + MyActivity.counter, Toast.LENGTH_SHORT).show();
+            MyActivity.counter++;
 
             return view;
         }
