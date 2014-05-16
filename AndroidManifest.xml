@@ -33,7 +33,7 @@
             </intent-filter>
         </receiver>
 
-        <service android:name=".android_service.tt"
+        <service android:name=".android_service.FizzService"
                  android:enabled="true"/>
 
     </application>
