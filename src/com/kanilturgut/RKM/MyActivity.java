@@ -1,6 +1,7 @@
 package com.kanilturgut.RKM;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
@@ -12,6 +13,7 @@ import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxCallback;
 import com.androidquery.callback.AjaxStatus;
 import com.kanilturgut.RKM.adapter.MyViewPagerAdapter;
+import com.kanilturgut.RKM.helpers.AQueryOperation;
 import com.kanilturgut.RKM.page_model.Foursquare;
 import com.kanilturgut.RKM.page_model.Instagram;
 import com.kanilturgut.RKM.page_model.SocialNetwork;
@@ -53,16 +55,17 @@ public class MyActivity extends FragmentActivity {
         setContentView(R.layout.main);
         context = this;
 
+        startActivity(new Intent(context, MainActivity.class));
         /*
         sharedPreferences = getSharedPreferences("logs", Context.CONTEXT_IGNORE_SECURITY);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("starting_time", sdf.format(new Date()));
         editor.commit();
 */
-        aq = new AQuery(this);
+        aq = AQueryOperation.getInstance();
 
         //starts application after 6 second to load UI components
-        init();
+        //init();
     }
 
     private void init() {

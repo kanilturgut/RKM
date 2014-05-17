@@ -3,6 +3,8 @@ package com.kanilturgut.RKM.android_service;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
+import com.androidquery.AQuery;
+import com.kanilturgut.RKM.helpers.AQueryOperation;
 
 /**
  * Author   : kanilturgut
@@ -10,6 +12,8 @@ import android.os.IBinder;
  * Time     : 15:06
  */
 public class FizzService extends Service{
+
+    AQuery aQuery = null;
 
     // don't bind anything
     @Override
@@ -21,12 +25,16 @@ public class FizzService extends Service{
     public void onCreate() {
         super.onCreate();
 
-        //set
+        aQuery = AQueryOperation.getInstance(this);
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        return super.onStartCommand(intent, flags, startId);
+
+
+
+
+        return START_STICKY;
     }
 
     @Override
