@@ -51,7 +51,7 @@ public class MainActivity extends FragmentActivity {
     public static void mainToSplash() {
         SplashFragment splashFragment = new SplashFragment();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.mainFrame, splashFragment);
+        fragmentTransaction.replace(R.id.mainFrame, splashFragment);
         fragmentTransaction.commit();
         clearBackStack();
     }
@@ -59,7 +59,7 @@ public class MainActivity extends FragmentActivity {
     public static void mainToFizzFragment(){
         FizzyFragment fizzyFragment = new FizzyFragment();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.mainFrame, fizzyFragment);
+        fragmentTransaction.replace(R.id.mainFrame, fizzyFragment);
         fragmentTransaction.commit();
         clearBackStack();
     }
@@ -67,7 +67,7 @@ public class MainActivity extends FragmentActivity {
     public static void currentToCurrent() {
         CurrentFragment currentFragment = new CurrentFragment();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.currentFragment, currentFragment);
+        fragmentTransaction.replace(R.id.currentFragment, currentFragment);
         fragmentTransaction.commit();
         clearBackStack();
     }
@@ -75,7 +75,7 @@ public class MainActivity extends FragmentActivity {
     public static void loadingToLoading() {
         LoadingFragment loadingFragment = new LoadingFragment();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.loadingFragment, loadingFragment);
+        fragmentTransaction.replace(R.id.loadingFragment, loadingFragment);
         fragmentTransaction.commit();
         clearBackStack();
     }
